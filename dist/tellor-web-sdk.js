@@ -257,6 +257,7 @@ var Transport = function () {
         key: '_XHRGet',
         value: function _XHRGet(trackItem) {
             var store = this.tellor.store;
+            store.lockItem(trackItem);
 
             try {
                 var xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -267,6 +268,7 @@ var Transport = function () {
                     if (this.readyState === 4 && this.status >= 200 && this.status < 300) {
                         store.remove(trackItem);
                     } else if (this.readyState === 4) {
+                        store.unlockItem(trackItem);
                         console.error('Failed to track', trackItem);
                     }
                 };
@@ -295,27 +297,77 @@ var Store = function () {
         classCallCheck(this, Store);
 
         this.transport = transport;
-        this.q = [];
+        this._LSId = '__ttc__';
+        this.q = this._getLocalStorageCache();
     }
 
     createClass(Store, [{
-        key: "submit",
+        key: 'submit',
         value: function submit(params) {
-            // TODO add to local storage for cache
-            this.q.push({ params: params });
+            var item = this._create(params);
+            this._addToLocalStorage(item);
+            this.q.push(item);
             this.transport.run();
         }
     }, {
-        key: "get",
+        key: 'get',
         value: function get() {
-            return this.q;
+            console.log('g', this.q);
+            return this.q.filter(function (item) {
+                return !item.isLocked;
+            });
         }
     }, {
-        key: "remove",
+        key: 'remove',
         value: function remove(item) {
-            // TODO remove from local storage for cache
             var i = this.q.indexOf(item);
-            if (i) this.q.splice(i, 1);
+            if (i > -1) this.q.splice(i, 1);
+            this._removeFromLocalStorage(item);
+        }
+    }, {
+        key: 'lockItem',
+        value: function lockItem(item) {
+            item.isLocked = true;
+        }
+    }, {
+        key: 'unlockItem',
+        value: function unlockItem(item) {
+            item.isLocked = false;
+        }
+    }, {
+        key: '_create',
+        value: function _create(params) {
+            return {
+                params: params,
+                id: Date.now() + Math.random().toFixed()
+            };
+        }
+    }, {
+        key: '_getLocalStorageCache',
+        value: function _getLocalStorageCache() {
+            try {
+                return JSON.parse(localStorage.getItem(this._LSId)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+    }, {
+        key: '_addToLocalStorage',
+        value: function _addToLocalStorage(item) {
+            var cache = this._getLocalStorageCache();
+            cache.push(item);
+
+            localStorage.setItem(this._LSId, JSON.stringify(cache));
+        }
+    }, {
+        key: '_removeFromLocalStorage',
+        value: function _removeFromLocalStorage(item) {
+            var cache = this._getLocalStorageCache();
+
+            var newCache = cache.filter(function (i) {
+                return i.id != item.id;
+            });
+            localStorage.setItem(this._LSId, JSON.stringify(newCache));
         }
     }]);
     return Store;
@@ -342,7 +394,8 @@ var Tellor = function () {
         this.store = new Store$$1(this.transport);
 
         if (window.__ttq !== undefined) {
-            window.__ttq.forEach(this.track); // if any events in cache that was created before Tellor initialized, track them
+            console.log(window.__ttq);
+            window.__ttq.forEach(this.track.bind(this)); // if any events in cache that was created before Tellor initialized, track them
         }
     }
 

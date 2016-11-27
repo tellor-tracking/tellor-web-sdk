@@ -16,6 +16,7 @@ export default class Transport {
 
     _XHRGet(trackItem) {
         const store = this.tellor.store;
+        store.lockItem(trackItem);
 
         try {
             const xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -26,6 +27,7 @@ export default class Transport {
                 if (this.readyState === 4 && this.status >= 200 && this.status < 300) {
                     store.remove(trackItem);
                 } else if (this.readyState === 4) {
+                    store.unlockItem(trackItem);
                     console.error('Failed to track', trackItem);
                 }
             };

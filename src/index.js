@@ -16,7 +16,7 @@ class Tellor {
         this.store = new Store(this.transport);
 
         if (window.__ttq !== undefined) {
-            window.__ttq.forEach(this.track); // if any events in cache that was created before Tellor initialized, track them
+            window.__ttq.forEach(this.track.bind(this)); // if any events in cache that was created before Tellor initialized, track them
         }
     }
 
