@@ -3,7 +3,7 @@ import Transport from './transport';
 import Store from './store';
 
 class Tellor {
-    constructor(formatters, Transport, Store,{appKey, appVersion = '1', url, user}) {
+    constructor(formatters, Transport, Store, {appKey, appVersion = '1', url, user}) {
         this.sdk = 'web';
         this.appKey = appKey;
         this.appVersion = appVersion;

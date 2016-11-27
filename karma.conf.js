@@ -34,17 +34,16 @@ module.exports = function(config) {
                 loaders: [{
                     test: /\.js.*$/,
                     exclude: /node_modules/,
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    query: {
+                        presets: ['latest'],
+                        babelrc: false,
+                    }
                 }]
             }
         },
 
 
-        babelPreprocessor: {
-            options: {
-                presets: ['es2015']
-            }
-        },
 
 
         // test results reporter to use
@@ -83,4 +82,4 @@ module.exports = function(config) {
         // how many browser should be started simultaneous
         concurrency: Infinity
     })
-}
+};
