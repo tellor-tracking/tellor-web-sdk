@@ -6,31 +6,29 @@
   "author": "Vytenis <vytenis.butkevicius@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "gulp",
-    "test": "node_modules/.bin/karma start karma.conf.js --single-run",
-    "test-watch": "node_modules/.bin/karma start karma.conf.js"
+    "start": "cross-env NODE_ENV=production gulp",
+    "test": "cross-env NODE_ENV=test mocha --require babel-polyfill --compilers js:babel-register \"tests/**/*-spec.js\" --report progress --recursive"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
     "babel-plugin-external-helpers": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
+    "babel-register": "^6.18.0",
     "chai": "^3.5.0",
+    "cross-env": "^3.1.3",
+    "express": "^4.14.0",
     "gulp": "^3.9.1",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
-    "karma": "^1.3.0",
-    "karma-babel-preprocessor": "^6.0.1",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-firefox-launcher": "^1.0.0",
-    "karma-mocha": "^1.2.0",
-    "karma-webpack": "^1.8.0",
     "mocha": "^3.1.2",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-stream": "^1.14.0",
+    "selenium-webdriver": "^3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.3"
-  }
+  },
+  "dependencies": {}
 }

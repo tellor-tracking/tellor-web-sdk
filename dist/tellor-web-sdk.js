@@ -312,7 +312,6 @@ var Store = function () {
     }, {
         key: 'get',
         value: function get() {
-            console.log('g', this.q);
             return this.q.filter(function (item) {
                 return !item.isLocked;
             });
@@ -394,7 +393,6 @@ var Tellor = function () {
         this.store = new Store$$1(this.transport);
 
         if (window.__ttq !== undefined) {
-            console.log(window.__ttq);
             window.__ttq.forEach(this.track.bind(this)); // if any events in cache that was created before Tellor initialized, track them
         }
     }
