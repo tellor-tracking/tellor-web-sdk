@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=production gulp",
-    "test": "cross-env NODE_ENV=test mocha --require babel-polyfill --compilers js:babel-register \"tests/**/*-spec.js\" --report progress --recursive"
+    "test": "cross-env NODE_ENV=test mocha --require babel-polyfill --compilers js:babel-register \"tests/**/*-spec.js\" --report progress --recursive",
+    "test:watch": "cross-env NODE_ENV=test mocha --require babel-polyfill --compilers js:babel-register \"tests/**/*-spec.js\" --report progress --recursive --watch"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
@@ -26,6 +27,7 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-stream": "^1.14.0",
     "selenium-webdriver": "^3.0.1",
+    "testdouble": "^1.9.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.3"

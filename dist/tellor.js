@@ -237,11 +237,11 @@ var set = function set(object, property, value, receiver) {
 };
 
 var Transport = function () {
-    function Transport(tellor) {
+    function Transport(tellor, debug) {
         classCallCheck(this, Transport);
 
         this.tellor = tellor;
-        this.runInterval = 10000;
+        this.runInterval = debug ? 500 : 10000;
         this.apiEndPoint = '/track';
         this.standardParams = this._formatStandardParams();
         setInterval(this.run.bind(this), this.runInterval);
@@ -378,7 +378,9 @@ var Tellor = function () {
             _ref$appVersion = _ref.appVersion,
             appVersion = _ref$appVersion === undefined ? '1' : _ref$appVersion,
             url = _ref.url,
-            user = _ref.user;
+            user = _ref.user,
+            _ref$debug = _ref.debug,
+            debug = _ref$debug === undefined ? false : _ref$debug;
         classCallCheck(this, Tellor);
 
         this.sdk = 'web';
@@ -389,8 +391,8 @@ var Tellor = function () {
 
         this.formatters = formatters$$1;
 
-        this.transport = new Transport$$1(this);
-        this.store = new Store$$1(this.transport);
+        this.transport = new Transport$$1(this, debug);
+        this.store = new Store$$1(this.transport, debug);
 
         if (window.__ttq !== undefined) {
             window.__ttq.forEach(this.track.bind(this)); // if any events in cache that was created before Tellor initialized, track them

@@ -1,8 +1,8 @@
 export default class Transport {
 
-    constructor(tellor) {
+    constructor(tellor, debug) {
         this.tellor = tellor;
-        this.runInterval = 10000;
+        this.runInterval =  debug ? 500 : 10000;
         this.apiEndPoint = '/track';
         this.standardParams = this._formatStandardParams();
         setInterval(this.run.bind(this), this.runInterval);

@@ -3,7 +3,7 @@ import Transport from './transport';
 import Store from './store';
 
 class Tellor {
-    constructor(formatters, Transport, Store, {appKey, appVersion = '1', url, user}) {
+    constructor(formatters, Transport, Store, {appKey, appVersion = '1', url, user, debug = false}) {
         this.sdk = 'web';
         this.appKey = appKey;
         this.appVersion = appVersion;
@@ -12,8 +12,8 @@ class Tellor {
 
         this.formatters = formatters;
 
-        this.transport = new Transport(this);
-        this.store = new Store(this.transport);
+        this.transport = new Transport(this, debug);
+        this.store = new Store(this.transport, debug);
 
         if (window.__ttq !== undefined) {
             window.__ttq.forEach(this.track.bind(this)); // if any events in cache that was created before Tellor initialized, track them

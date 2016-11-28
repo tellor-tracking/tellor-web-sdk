@@ -12,7 +12,7 @@ const paths = {
     destDir: 'dist/',
     webSDK: {
         src: 'src/index.js',
-        destName: 'tellor-web-sdk.js',
+        destName: 'tellor.js',
         moduleName: 'window.Tellor'
     }
 };
